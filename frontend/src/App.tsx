@@ -31,8 +31,8 @@ const App: React.FC = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/confirm-registration/:token" element={<ConfirmRegistrationPage />} />
-        <Route path="/create-patient" element={token ? <CreatePatientPage /> : <Navigate to="/login" />} />
-        <Route path="/create-doctor" element={token ? <CreateDoctorPage /> : <Navigate to="/login" />} />
+        <Route path="/create-patient" element={<CreatePatientPage />} />
+        <Route path="/create-doctor" element={<CreateDoctorPage />} />
 
         <Route 
           path="/patient/*" 
@@ -68,7 +68,7 @@ const App: React.FC = () => {
             ) : role === 'Doctor' ? (
               <DoctorHomePage />
             ) : (
-              <Navigate to="create-patient" />
+              <Navigate to="/create-patient" />
             )
           ) : (
             <Navigate to="/login" />

@@ -40,7 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       navigate('/', { replace: true });
     } catch {
       setRole(null);
-      navigate('/login', { replace: true });
+      navigate('/', { replace: true });
     }
   };
 
