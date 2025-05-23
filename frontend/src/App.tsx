@@ -19,10 +19,10 @@ import CreateDoctorPage from './pages/CreateDoctorPage';
 import Navbar from './components/Navbar';
 import PatientHomePage from './pages/PatientHomePage';
 import DoctorHomePage from './pages/DoctorHomePage';
+import { useAuth } from './hooks/useAuth';
 
 const App: React.FC = () => {
-  const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
+  const { token, role } = useAuth();
 
   return (
     <>
@@ -34,8 +34,8 @@ const App: React.FC = () => {
         <Route path="/create-patient" element={<CreatePatientPage />} />
         <Route path="/create-doctor" element={<CreateDoctorPage />} />
 
-        <Route 
-          path="/patient/*" 
+        <Route
+          path="/patient/*"
           element={
             token && role === 'Patient' ? <PatientLayout /> : <Navigate to="/login" />
           }
@@ -49,8 +49,8 @@ const App: React.FC = () => {
           <Route path="appointments" element={<PatientAppointmentsPage />} />
         </Route>
 
-        <Route 
-          path="/doctor/*" 
+        <Route
+          path="/doctor/*"
           element={
             token && role === 'Doctor' ? <DoctorLayout /> : <Navigate to="/login" />
           }

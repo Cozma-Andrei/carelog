@@ -113,22 +113,43 @@ export const updatePatientProfile = async (req: Request, res: Response, next: Ne
 export const viewMedicalData = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const identifier = req.params.patientId || req.user?._id?.toString();
+    const userId = req.user?._id?.toString();
 
-    const patient = await Patient.findOne({
-      $or: [
-        { _id: identifier },
-        { userAccountId: req.user?._id },
-        { firstName: identifier },
-        { lastName: identifier },
-        { phone: identifier }
-      ]
+    let patients: any[] = [];
+
+    // 1. Dacă utilizatorul este Admin, putem căuta în toți pacienții
+    if (req.user?.role === 'Admin') {
+      patients = await Patient.find({});
+    } else {
+      // 2. Altfel, limităm doar la pacienții asociați userului
+      patients = await Patient.find({ userAccountId: userId });
+    }
+
+    // 3. Încercăm să potrivim după toate regulile posibile
+    const patient = patients.find(p => {
+      const fn = p.firstName?.toLowerCase() || '';
+      const ln = p.lastName?.toLowerCase() || '';
+      const phone = p.phone || '';
+      const idLower = identifier.toLowerCase();
+
+      return (
+        p._id?.toString() === identifier ||
+        p.userAccountId?.toString() === userId ||
+        fn.includes(idLower) ||
+        ln.includes(idLower) ||
+        phone.includes(identifier) ||
+        idLower.includes(fn) ||
+        idLower.includes(ln) ||
+        identifier.includes(phone)
+      );
     });
 
     if (!patient) {
       throw new ResourceNotFoundError('Patient not found');
     }
 
-    const isOwner = patient.userAccountId?.toString() === req.user?._id?.toString();
+    // 4. Verifică permisiuni
+    const isOwner = patient.userAccountId?.toString() === userId;
     const isAdminOrDoctor = req.user?.role === 'Doctor' || req.user?.role === 'Admin';
 
     if (!isOwner && !isAdminOrDoctor) {
