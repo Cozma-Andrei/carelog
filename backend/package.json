@@ -4,7 +4,7 @@
   "description": "A basic TypeScript Express app",
   "main": "dist/main.js",
   "scripts": {
-    "start": "tsc && node dist/main.js",
+    "start": "tsc && node --max-old-space-size=2048 dist/main.js",
     "dev": "ts-node-dev --respawn --transpile-only src/main.ts",
     "build": "tsc"
   },
