@@ -5,7 +5,7 @@ WORKDIR /usr/local/apps/myapp
 COPY package.json ./
 COPY tsconfig.json ./
 
-RUN npm install && npm cache clean --force
+RUN npm install --only=production && npm cache clean --force
 
 COPY src ./src
 # COPY .env ./
