@@ -123,7 +123,7 @@ export const viewMedicalData = async (req: Request, res: Response, next: NextFun
       patients = await Patient.find({ userAccountId: userId });
     }
 
-    const patient = patients.find(p => {
+    let patient = patients.find(p => {
       const fn = p.firstName?.toLowerCase() || '';
       const ln = p.lastName?.toLowerCase() || '';
       const phone = p.phone || '';
@@ -140,7 +140,10 @@ export const viewMedicalData = async (req: Request, res: Response, next: NextFun
     });
 
     if (!patient) {
-      throw new ResourceNotFoundError('Patient not found');
+      patient = await Patient.findOne({ userAccountId: userId });
+      if (!patient) {
+        throw new ResourceNotFoundError('Patient not found');
+      }
     }
 
     const isOwner = patient.userAccountId?.toString() === userId;
