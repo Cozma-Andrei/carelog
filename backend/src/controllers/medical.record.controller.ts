@@ -80,12 +80,34 @@ export const getMedicalRecordsByPatientId = async (req: Request, res: Response, 
       throw new ResourceNotFoundError('Doctor profile not found or not verified');
     }
 
-    const patient = await Patient.findById(patientId);
+    let patients: any[] = [];
+
+    if (req.user?.role === 'Admin' || req.user?.role === 'Doctor') {
+      patients = await Patient.find({});
+    }
+
+    const identifier = patientId;
+    const patient = patients.find(p => {
+      const fn = p.firstName?.toLowerCase() || '';
+      const ln = p.lastName?.toLowerCase() || '';
+      const phone = p.phone || '';
+      const idLower = identifier.toLowerCase();
+
+      return (
+        fn.includes(idLower) ||
+        ln.includes(idLower) ||
+        phone.includes(identifier) ||
+        idLower.includes(fn) ||
+        idLower.includes(ln) ||
+        identifier.includes(phone)
+      );
+    });
+
     if (!patient) {
       throw new ResourceNotFoundError('Patient not found');
     }
 
-    const medicalRecords = await MedicalRecord.find({ patientId })
+    const medicalRecords = await MedicalRecord.find({ patientId: patient._id })
       .populate('doctorId', 'firstName lastName specialization')
       .sort({ recordDate: -1 });
 
