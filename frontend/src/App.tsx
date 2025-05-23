@@ -22,7 +22,11 @@ import DoctorHomePage from './pages/DoctorHomePage';
 import { useAuth } from './hooks/useAuth';
 
 const App: React.FC = () => {
-  const { token, role } = useAuth();
+  const { token, role, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

@@ -117,15 +117,12 @@ export const viewMedicalData = async (req: Request, res: Response, next: NextFun
 
     let patients: any[] = [];
 
-    // 1. Dacă utilizatorul este Admin sau Doctor, putem căuta în toți pacienții
     if (req.user?.role === 'Admin' || req.user?.role === 'Doctor') {
       patients = await Patient.find({});
     } else {
-      // 2. Altfel, limităm doar la pacienții asociați userului
       patients = await Patient.find({ userAccountId: userId });
     }
 
-    // 3. Încercăm să potrivim după toate regulile posibile
     const patient = patients.find(p => {
       const fn = p.firstName?.toLowerCase() || '';
       const ln = p.lastName?.toLowerCase() || '';
@@ -133,8 +130,6 @@ export const viewMedicalData = async (req: Request, res: Response, next: NextFun
       const idLower = identifier.toLowerCase();
 
       return (
-        p._id?.toString() === identifier ||
-        p.userAccountId?.toString() === userId ||
         fn.includes(idLower) ||
         ln.includes(idLower) ||
         phone.includes(identifier) ||
@@ -148,7 +143,6 @@ export const viewMedicalData = async (req: Request, res: Response, next: NextFun
       throw new ResourceNotFoundError('Patient not found');
     }
 
-    // 4. Verifică permisiuni
     const isOwner = patient.userAccountId?.toString() === userId;
     const isAdminOrDoctor = req.user?.role === 'Doctor' || req.user?.role === 'Admin';
 
