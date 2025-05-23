@@ -117,8 +117,8 @@ export const viewMedicalData = async (req: Request, res: Response, next: NextFun
 
     let patients: any[] = [];
 
-    // 1. Dacă utilizatorul este Admin, putem căuta în toți pacienții
-    if (req.user?.role === 'Admin') {
+    // 1. Dacă utilizatorul este Admin sau Doctor, putem căuta în toți pacienții
+    if (req.user?.role === 'Admin' || req.user?.role === 'Doctor') {
       patients = await Patient.find({});
     } else {
       // 2. Altfel, limităm doar la pacienții asociați userului
