@@ -50,7 +50,7 @@ export const createPatient = async (req: Request, res: Response, next: NextFunct
       await user.save();
     }
 
-    res.status(201).send({ 
+    res.status(201).send({
       message: 'Patient profile created successfully',
       patient: {
         id: patient._id,
@@ -101,7 +101,7 @@ export const updatePatientProfile = async (req: Request, res: Response, next: Ne
       { new: true }
     );
 
-    res.status(200).send({ 
+    res.status(200).send({
       message: 'Patient profile updated successfully',
       patient: updatedPatient
     });
@@ -112,19 +112,26 @@ export const updatePatientProfile = async (req: Request, res: Response, next: Ne
 
 export const viewMedicalData = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const patientId = req.params.patientId || req.user?._id;
-    const patient = await Patient.findOne({ 
+    const identifier = req.params.patientId || req.user?._id?.toString();
+
+    const patient = await Patient.findOne({
       $or: [
-        { _id: patientId },
-        { userAccountId: req.user?._id }
+        { _id: identifier },
+        { userAccountId: req.user?._id },
+        { firstName: identifier },
+        { lastName: identifier },
+        { phone: identifier }
       ]
     });
-    
+
     if (!patient) {
       throw new ResourceNotFoundError('Patient not found');
     }
 
-    if (patientId !== req.user?._id.toString() && req.user?.role !== 'Doctor' && req.user?.role !== 'Admin') {
+    const isOwner = patient.userAccountId?.toString() === req.user?._id?.toString();
+    const isAdminOrDoctor = req.user?.role === 'Doctor' || req.user?.role === 'Admin';
+
+    if (!isOwner && !isAdminOrDoctor) {
       throw new ResourceNotFoundError('You do not have permission to access this data');
     }
 
