@@ -152,6 +152,7 @@ export const viewMedicalData = async (req: Request, res: Response, next: NextFun
 
     res.status(200).send({
       patient: {
+        _id: patient._id,
         firstName: patient.firstName,
         lastName: patient.lastName,
         birthDate: patient.birthDate,

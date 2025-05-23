@@ -43,7 +43,7 @@ const PatientDetailPage: React.FC = () => {
     try {
       const recordDate = new Date().toISOString().split('T')[0];
       await api.post('/medicalRecord', { 
-        patientId, 
+        patientId: patient?._id, 
         diagnosis: newRecord.diagnosis, 
         observations: newRecord.observations, 
         recommendedTreatment: newRecord.recommendedTreatment, 
@@ -91,7 +91,7 @@ const PatientDetailPage: React.FC = () => {
     e.preventDefault();
     setMessage(null);
     try {
-      await api.post('/recommendation', { patientId, content: newRec.content });
+      await api.post('/recommendation', { patientId: patient?._id, content: newRec.content });
       setMessage("Recomandare emisă pacientului.");
       setNewRec({ content: "" });
     } catch (err) {
