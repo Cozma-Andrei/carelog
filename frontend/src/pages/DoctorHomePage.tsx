@@ -198,6 +198,7 @@ const DoctorHomePage: React.FC = () => {
           variants={itemVariants}
           className="bg-white rounded-2xl shadow-lg overflow-hidden border border-purple-100"
         >
+        <Link to="doctor/profile/edit">
           <div className="bg-purple-600 p-4">
             <h2 className="text-xl font-semibold text-white flex items-center">
               <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,7 +207,8 @@ const DoctorHomePage: React.FC = () => {
               Profilul meu
             </h2>
           </div>
-          <div className="p-6 space-y-2">
+
+          <div className="p-6 space-y-2 hover:bg-purple-100">
             <p className="text-gray-700">
               <span className="font-semibold">Specializare:</span> {doctorProfile?.specialization}
             </p>
@@ -224,6 +226,7 @@ const DoctorHomePage: React.FC = () => {
               </span>
             </p>
           </div>
+          </Link>
         </motion.div>
       </motion.div>
 

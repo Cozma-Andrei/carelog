@@ -20,6 +20,9 @@ import Navbar from './components/Navbar';
 import PatientHomePage from './pages/PatientHomePage';
 import DoctorHomePage from './pages/DoctorHomePage';
 import { useAuth } from './hooks/useAuth';
+import DoctorProfileEditPage  from "./pages/doctor/DoctorProfileEditPage";
+import AddDoctorAppointmentPage from './pages/doctor/AddDoctorAppointmentPage';
+
 
 const App: React.FC = () => {
   const { token, role, loading } = useAuth();
@@ -61,6 +64,8 @@ const App: React.FC = () => {
         >
           <Route index element={<Navigate to="appointments" />} />
           <Route path="appointments" element={<DoctorAppointmentsPage />} />
+          <Route path="appointments/new" element={<AddDoctorAppointmentPage />} />
+          <Route path="profile/edit" element={<DoctorProfileEditPage />} />
           <Route path="patient" element={<PatientSearchPage />} />
           <Route path="patient/:patientId" element={<PatientDetailPage />} />
         </Route>
