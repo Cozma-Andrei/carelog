@@ -101,7 +101,7 @@ const DoctorHomePage: React.FC = () => {
       >
         <motion.div 
           variants={itemVariants}
-          className="bg-white rounded-2xl shadow-lg overflow-hidden border border-green-100"
+          className="bg-white rounded-2xl shadow-lg overflow-hidden border border-green-100 transform hover:-translate-y-1 transition-all duration-300"
         >
           <div className="bg-green-600 p-4">
             <h2 className="text-xl font-semibold text-white flex items-center">
@@ -162,7 +162,7 @@ const DoctorHomePage: React.FC = () => {
 
         <motion.div 
           variants={itemVariants}
-          className="bg-white rounded-2xl shadow-lg overflow-hidden border border-blue-100"
+          className="bg-white rounded-2xl shadow-lg overflow-hidden border border-blue-100 transform hover:-translate-y-1 transition-all duration-300"
         >
           <div className="bg-blue-600 p-4">
             <h2 className="text-xl font-semibold text-white flex items-center">
@@ -196,7 +196,7 @@ const DoctorHomePage: React.FC = () => {
 
         <motion.div 
           variants={itemVariants}
-          className="bg-white rounded-2xl shadow-lg overflow-hidden border border-purple-100"
+          className="bg-white rounded-2xl shadow-lg overflow-hidden border border-purple-100 transform hover:-translate-y-1 transition-all duration-300"
         >
           <div className="bg-purple-600 p-4">
             <h2 className="text-xl font-semibold text-white flex items-center">
