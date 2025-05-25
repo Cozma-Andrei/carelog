@@ -69,7 +69,6 @@ export const createAppointment = async (req: Request, res: Response, next: NextF
 export const createAppointmentForPatient = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const appointmentSchema = Joi.object({
-      patientId: Joi.string().required().messages(validationMessages),
       appointmentDate: Joi.date().min('now').required().messages(validationMessages),
       time: Joi.string().pattern(/^([01]\d|2[0-3]):([0-5]\d)$/).required().messages(validationMessages),
       notes: Joi.string().allow('').required().messages(validationMessages),
