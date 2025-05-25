@@ -13,7 +13,7 @@ const PatientSearchPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg ">
       <h3 className="text-xl font-semibold mb-4 text-center text-gray-800">Caută Pacient</h3>
       <form onSubmit={handleSearch} className="space-y-4">
         <div>

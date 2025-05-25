@@ -198,7 +198,6 @@ const DoctorHomePage: React.FC = () => {
           variants={itemVariants}
           className="bg-white rounded-2xl shadow-lg overflow-hidden border border-purple-100"
         >
-        <Link to="doctor/profile/edit">
           <div className="bg-purple-600 p-4">
             <h2 className="text-xl font-semibold text-white flex items-center">
               <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,26 +206,30 @@ const DoctorHomePage: React.FC = () => {
               Profilul meu
             </h2>
           </div>
-
-          <div className="p-6 space-y-2 hover:bg-purple-100">
-            <p className="text-gray-700">
-              <span className="font-semibold">Specializare:</span> {doctorProfile?.specialization}
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Telefon:</span> {doctorProfile?.phone}
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Statut verificare:</span> 
-              <span className={`ml-2 px-2 py-1 rounded-full text-sm ${
-                doctorProfile?.isVerified 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-yellow-100 text-yellow-800'
-              }`}>
-                {doctorProfile?.isVerified ? 'Verificat' : 'În așteptare'}
-              </span>
-            </p>
-          </div>
-          </Link>
+          
+          <div className="p-6">
+            <Link
+                to="/doctor/profile/edit"
+                className="p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors flex flex-col items-start space-y-1"
+              >
+              <p className="text-gray-700">
+                <span className="font-semibold">Specializare:</span> {doctorProfile?.specialization}
+              </p>
+              <p className="text-gray-700">
+                <span className="font-semibold">Telefon:</span> {doctorProfile?.phone}
+              </p>
+              <p className="text-gray-700">
+                <span className="font-semibold">Statut verificare:</span> 
+                <span className={`ml-2 px-2 py-1 rounded-full text-sm ${
+                  doctorProfile?.isVerified 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-yellow-100 text-yellow-800'
+                }`}>
+                  {doctorProfile?.isVerified ? 'Verificat' : 'În așteptare'}
+                </span>
+              </p>
+              </Link>
+            </div>
         </motion.div>
       </motion.div>
 

@@ -68,8 +68,8 @@ const DoctorProfileEditPage: React.FC = () => {
     );
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-white rounded shadow-md">
+    <div className="flex items-center justify-center bg-gray-50">
+      <div className="w-full max-w-lg mt-10 p-6 bg-white rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold mb-6 text-center">Editează Profilul</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">

@@ -61,8 +61,7 @@ const AddDoctorAppointmentPage: React.FC = () => {
 
   /* ───── UI ───── */
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-white rounded shadow-md">
+      <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold mb-6 text-center">Adaugă programare</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -148,7 +147,6 @@ const AddDoctorAppointmentPage: React.FC = () => {
           </button>
         </form>
       </div>
-    </div>
   );
 };
 
