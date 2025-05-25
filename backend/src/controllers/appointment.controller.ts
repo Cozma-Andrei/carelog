@@ -113,7 +113,7 @@ export const createAppointmentForPatient = async (req: Request, res: Response, n
 
     const existingAppointment = await Appointment.findOne({
       doctorId: doctor._id,
-      patientId,
+      patientId: patient._id,
       appointmentDate: new Date(appointmentDate),
       time
     });
@@ -123,7 +123,7 @@ export const createAppointmentForPatient = async (req: Request, res: Response, n
     }
 
     const appointment = new Appointment({
-      patientId,
+      patientId: patient._id,
       doctorId: doctor._id,
       appointmentDate: new Date(appointmentDate),
       time,
