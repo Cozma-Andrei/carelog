@@ -66,6 +66,89 @@ export const createAppointment = async (req: Request, res: Response, next: NextF
   }
 };
 
+export const createAppointmentForPatient = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const appointmentSchema = Joi.object({
+      patientId: Joi.string().required().messages(validationMessages),
+      appointmentDate: Joi.date().min('now').required().messages(validationMessages),
+      time: Joi.string().pattern(/^([01]\d|2[0-3]):([0-5]\d)$/).required().messages(validationMessages),
+      notes: Joi.string().allow('').required().messages(validationMessages),
+    }).unknown(true);
+
+    const { error } = appointmentSchema.validate(req.body);
+    if (error) throw error;
+
+    const { patientId, appointmentDate, time, notes } = req.body;
+
+    const doctor = await Doctor.findOne({ userAccountId: req.user?._id });
+    if (!doctor || !doctor.isVerified) {
+      throw new ResourceNotFoundError('Doctor profile not found or not verified');
+    }
+
+    let patients: any[] = [];
+    
+    if (req.user?.role === 'Admin' || req.user?.role === 'Doctor') {
+      patients = await Patient.find({});
+    }
+
+    const identifier = patientId;
+    const patient = patients.find(p => {
+      const fn = p.firstName?.toLowerCase() || '';
+      const ln = p.lastName?.toLowerCase() || '';
+      const phone = p.phone || '';
+      const idLower = identifier.toLowerCase();
+
+      return (
+        fn.includes(idLower) ||
+        ln.includes(idLower) ||
+        phone.includes(identifier) ||
+        idLower.includes(fn) ||
+        idLower.includes(ln) ||
+        identifier.includes(phone)
+      );
+    });
+
+    if (!patient) {
+      throw new ResourceNotFoundError('Patient not found');
+    }
+
+    const existingAppointment = await Appointment.findOne({
+      doctorId: doctor._id,
+      patientId,
+      appointmentDate: new Date(appointmentDate),
+      time
+    });
+
+    if (existingAppointment) {
+      throw new ResourceConflictError('The requested appointment time is already booked');
+    }
+
+    const appointment = new Appointment({
+      patientId,
+      doctorId: doctor._id,
+      appointmentDate: new Date(appointmentDate),
+      time,
+      status: 'Scheduled',
+      notes
+    });
+
+    await appointment.save();
+
+    res.status(201).send({
+      message: 'Appointment scheduled successfully',
+      appointment: {
+        id: appointment._id,
+        date: appointment.appointmentDate,
+        time: appointment.time,
+        status: appointment.status,
+        patientName: `${patient.firstName} ${patient.lastName}`
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getPatientAppointments = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const patient = await Patient.findOne({ userAccountId: req.user?._id });
